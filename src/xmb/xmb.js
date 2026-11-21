@@ -309,7 +309,7 @@ function render() {
   if (S.info) H.push(infoPanel(a, L.info.x, L.info.y, L.info.w, portrait ? Math.max(6, Math.floor(nameTop) - L.info.y - 1) : L.info.h));
 
   const hints = S.ctx === 'device'
-    ? `${pill('n', '↕', 'CATEGORY', 'none')}${pill('n', '↔', 'TITLES', 'none')}${pill('a', 'A', 'SELECT', 'a')}${pill('y', 'Y', 'INFO', 'y')}${pill('b', 'B', 'BACK', 'b')}`
+    ? `${pill('n', '↕', 'CATEGORY', 'none')}${pill('n', '↔', 'TITLES', 'none')}${pill('a', 'A', 'SELECT', 'a')}${pill('y', 'Y', 'INFO', 'y')}${pill('b', 'B', S.ci === 0 && !S.info && !S.confirm ? 'QUIT' : 'BACK', 'b')}${pill('n', 'START', 'TERMINAL', 'start')}`
     : S.touch
       ? (portrait
         ? '<span class="h"><kbd>SWIPE</kbd> ↕↔ browse</span><span class="h"><kbd>TAP</kbd> copy</span><kbd>HOLD</kbd> info'
@@ -416,8 +416,13 @@ async function press(btn) {
     if (S.busy && S.busy.cancel) { S.busy.cancel(); return; }
     if (S.confirm) S.confirm = null;
     else if (S.info) S.info = false;
-    else S.ci = 0;
+    else if (S.ci !== 0) S.ci = 0;
+    else if (S.engine) { S.engine.exit(); return; }       // the top row: B leaves, as in the TUI
     render(); return;
+  }
+  if (btn === 'start') {                                   // the terminal store, this time (CONTRACT R13)
+    if (S.engine && !S.busy) S.engine.exit('tui');
+    return;
   }
   if (S.busy || !a) return;
   if (btn === 'a') {
@@ -452,7 +457,7 @@ function bindInput() {
   addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const map = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
-    const btn = { Enter: 'a', ' ': 'y', Escape: 'b', Backspace: 'b', x: 'x', y: 'y', '[': 'l1', ']': 'r1' }[e.key];
+    const btn = { Enter: 'a', ' ': 'y', Escape: 'b', Backspace: 'b', x: 'x', y: 'y', '[': 'l1', ']': 'r1', s: 'start' }[e.key];
     if (!map[e.key] && !btn) return;
     e.preventDefault();
     const was = S.attract;
@@ -462,7 +467,7 @@ function bindInput() {
   });
 
   // standard-mapping gamepad, Nintendo face labels (Flip 2): east = A, south = B, north = X, west = Y
-  const PAD = { 1: 'a', 0: 'b', 3: 'x', 2: 'y', 4: 'l1', 5: 'r1' };
+  const PAD = { 1: 'a', 0: 'b', 3: 'x', 2: 'y', 4: 'l1', 5: 'r1', 9: 'start' };
   const DIRS = { 12: [-1, 0], 13: [1, 0], 14: [0, -1], 15: [0, 1] };
   // seeded with every button still down at start (the press that skipped the intro), so a held button only
   // acts once it is released and pressed again
@@ -527,7 +532,7 @@ export async function start() {
   ui = document.getElementById('ui');
   live = document.getElementById('live');
   const bind = binding();
-  if (bind) { S.ctx = 'device'; S.engine = new Engine(bind); }
+  if (bind) { S.ctx = 'device'; S.engine = new Engine(bind); S.engine.hello(); }
   document.body.classList.toggle('device', S.ctx === 'device');
   addEventListener('resize', render);
   render();
@@ -538,6 +543,8 @@ export async function start() {
   } catch (e) {
     S.error = e.message;
     render();
+    // the handheld with no catalog (offline, nothing cached): the terminal store has a bundled one
+    if (S.engine) setTimeout(() => S.engine.exit('tui'), 2500);
     return;
   }
   if (S.ctx === 'device') {

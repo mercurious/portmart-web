@@ -92,4 +92,10 @@ export class Engine {
     const rows = JSON.parse(r.lines.filter((l) => !l.startsWith('@')).join('\n'));
     return Object.fromEntries(rows.map((x) => [x.id, x]));
   }
+
+  // The page is up: the launcher stops waiting for it (portmart CONTRACT R13).
+  hello() { this.bind(JSON.stringify({ op: 'hello' })); }
+
+  // Close the browser store: back to EmulationStation, or with next = 'tui' to the terminal store instead.
+  exit(next) { this.bind(JSON.stringify(next ? { op: 'exit', next } : { op: 'exit' })); }
 }
