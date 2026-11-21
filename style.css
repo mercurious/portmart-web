@@ -1,37 +1,151 @@
-html, body {
-  margin: 0;
-  height: 100%;
-  overflow: hidden;
-  background: #0b0d12;
+/* portmart.app (portmart DESIGN.md). Every foreground element sits on the cell grid: --cw x --ch CSS px,
+   cells 1:2 as in foot. xmb.js sets --cw/--ch and places cells with --x/--y/--w/--h. */
+
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("/fonts/DejaVuSansMono.ttf") format("truetype");
+  font-weight: 400;
+  font-display: block;
+}
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("/fonts/DejaVuSansMono-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-display: block;
 }
 
+:root {
+  --bg: #0b0d12; --sel: #221a44; --purple: #9362f4; --cyan: #00dbe4;
+  --magenta: #e752d3; --pink: #ff4fd8; --gold: #d4c090; --muted: #6b7280; --mid: #9ca3b0; --text: #e8eaf0;
+  --sep: #2a3038; --green: #4ade80; --orange: #ffb000; --red: #ff5a6e; --blue: #5aa9ff; --ink: #05060a;
+  --cw: 17px; --ch: 34px;
+  --a0: #ffb000; --a1: #ff4fd8; --a2: #9362f4;
+}
+
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); }
 body {
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  touch-action: manipulation;
+  font: 400 calc(var(--cw) / 0.602) / var(--ch) "DejaVu Sans Mono", monospace;
+  -webkit-tap-highlight-color: transparent; user-select: none; touch-action: none;
+  font-variant-ligatures: none; caret-color: var(--a1);
+}
+::selection { background: var(--sel); color: var(--text); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0; }
+:focus-visible { outline: calc(var(--cw) / 6) solid var(--cyan); outline-offset: calc(var(--cw) / 6); }
+
+#atmo { position: fixed; inset: 0; width: 100vw; height: 100dvh; display: block; }
+/* the launch intro covers everything, then fades */
+#splash { position: fixed; inset: 0; width: 100vw; height: 100dvh; display: block; z-index: 10;
+  transition: opacity .35s cubic-bezier(.16, 1, .3, 1); }
+#splash.gone { opacity: 0; }
+
+/* legibility scrims under the foreground stack; the media stays clear above it */
+#scrim {
+  position: fixed; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgb(11 13 18 / .8) 0, rgb(11 13 18 / 0) calc(var(--ch) * 3.5)),
+    linear-gradient(to right, rgb(11 13 18 / .72) 0, rgb(11 13 18 / .5) calc(var(--cw) * var(--scrim-cols, 20) * .6),
+      rgb(11 13 18 / 0) calc(var(--cw) * var(--scrim-cols, 20))),
+    linear-gradient(to top, rgb(11 13 18 / .94) 0, rgb(11 13 18 / .82) calc(var(--ch) * 4),
+      rgb(11 13 18 / 0) calc(var(--ch) * var(--scrim-rows, 13)));
+  transition: opacity .5s cubic-bezier(.16, 1, .3, 1);
+}
+body.attract #scrim { opacity: .25; }
+/* floating type reads over bright media through a dark shadow, not a bar */
+.status .right, .cat-item, .hints, .blurb, .meta, .note {
+  text-shadow: 0 calc(var(--cw) / 10) calc(var(--cw) / 2) rgb(5 6 10 / .85); }
+
+#ui { position: fixed; inset: 0; }
+.c {
+  position: absolute; left: calc(var(--x) * var(--cw)); top: calc(var(--y) * var(--ch));
+  width: calc(var(--w, auto) * var(--cw)); height: calc(var(--h, 1) * var(--ch));
+  white-space: pre; overflow: hidden;
+  transition: opacity .35s cubic-bezier(.16, 1, .3, 1);
+}
+body.attract .fade { opacity: 0; }
+
+/* status: omp-style segments floating one row in from the top, no bar */
+.status { color: var(--mid); }
+.status .seg { padding: 0 1ch; }
+.status .brand { color: var(--ink); background: var(--purple); font-weight: 700; }
+.status .cat { color: var(--ink); background: var(--a0); font-weight: 700; }
+.status .tail { color: var(--text); }
+.status .right { position: absolute; right: 1ch; top: 0; color: var(--text); }
+
+/* category spine (the XMB vertical axis) */
+.cat-item { color: var(--mid); font-weight: 700; letter-spacing: .02em; cursor: pointer; }
+.cat-item.far { color: var(--muted); }
+.cat-item.focus { color: var(--text); }
+.cat-item .mark { color: var(--a0); }
+.cat-item.focus::after {
+  content: ""; position: absolute; left: 0; bottom: calc(var(--ch) * .16); height: calc(var(--cw) / 4);
+  width: 100%; background: linear-gradient(90deg, var(--a0), var(--a1), var(--a2));
 }
 
-h1 {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
+/* title strip (the horizontal axis) */
+.tile { overflow: visible; cursor: pointer; }
+.tile img { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.tile.dim img, .tile.dim canvas { filter: brightness(.62) saturate(.7); }
+.tile.focus { z-index: 2; }
+.tile.focus::before {
+  content: ""; position: absolute; inset: calc(var(--cw) / -3);
+  border: calc(var(--cw) / 5) solid var(--a1);
+  box-shadow: 0 calc(var(--cw) / 3) calc(var(--cw) * 1.2) rgb(0 0 0 / .6);
 }
+.tile .st { position: absolute; left: 0; bottom: 0; font-weight: 700; padding: 0 .5ch; line-height: calc(var(--ch) * .8);
+  font-size: .62em; }
+.tile .st.tl { color: var(--text); }
 
-canvas {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  display: block;
-}
+.title { overflow: visible; }
+.title canvas { display: block; image-rendering: pixelated; }
+.meta { color: var(--mid); }
+.meta b { color: var(--text); font-weight: 700; }
+.blurb { color: var(--text); white-space: pre-wrap; }
+.note { color: var(--text); }
+.note.bad, .warn { color: var(--red); font-weight: 700; }
+.dim { color: var(--muted); }
 
-noscript img {
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  image-rendering: pixelated;
-}
+.badge { font-weight: 700; padding: 0 .5ch; margin-right: 1ch; }
+.b-need { color: #ffcf66; background: #3a2a08; } .b-net { color: #7af3fa; background: #06343a; }
+.b-ai { color: #f3b6ff; background: #3a1446; } .b-size { color: #e4d8ff; background: #3d2b80; }
+.b-gen { color: #d0d4dc; background: #2a3038; } .b-rt { color: #9fe8c0; background: #103a26; }
+.b-comm { color: #0b0d12; background: #d4c090; } .b-pre { color: #0b0d12; background: #ff8a5c; }
+.b-web { color: #0b0d12; background: #5aa9ff; } .b-priv { color: #0b0d12; background: #e752d3; }
+.b-ok { color: #0b0d12; background: #4ade80; } .b-upd { color: #0b0d12; background: #ffb000; }
+
+/* button pills ◖A◗: colour plus label, never colour alone */
+.pill { font-weight: 700; cursor: pointer; }
+.pill .k { color: var(--ink); }
+.pill.a .k { background: var(--green); } .pill.b .k { background: var(--red); }
+.pill.x .k { background: var(--blue); } .pill.y .k { background: var(--orange); }
+.pill.n .k { background: var(--mid); }
+.pill .cap { font-weight: 400; }
+.pill .cap.a { color: var(--green); } .pill .cap.b { color: var(--red); }
+.pill .cap.x { color: var(--blue); } .pill .cap.y { color: var(--orange); } .pill .cap.n { color: var(--mid); }
+.pill .l { margin: 0 1ch 0 .5ch; color: var(--text); }
+
+/* the installer line: the off-device action */
+.cmd { padding: 0 1ch; box-sizing: border-box; background: rgb(5 6 10 / .72); color: var(--text); cursor: pointer; }
+.cmd .p { color: var(--a0); } .cmd .u { color: var(--cyan); }
+.cmd .copy { position: absolute; right: 0; top: 0; color: var(--ink); background: var(--green); font-weight: 700; padding: 0 1ch; }
+.cmd:hover .copy, .cmd.copied .copy { background: var(--cyan); }
+
+.progress { color: var(--text); }
+.progress .bar { color: var(--a0); }
+.progress .bar i { color: var(--sep); font-style: normal; }
+
+.hints { color: var(--mid); }
+.hints .h { margin-right: 2ch; } .hints kbd { font: inherit; color: var(--text); font-weight: 700; }
+
+/* info panel (Space / Y): docked, never a modal */
+.info { background: rgb(11 13 18 / .78); box-shadow: 0 calc(var(--cw) * .6) calc(var(--cw) * 3) rgb(0 0 0 / .45);
+  white-space: pre-wrap; padding: calc(var(--ch) * .5) 2ch; box-sizing: border-box; color: var(--text); }
+.info .k { color: var(--muted); } .info h2 { all: unset; color: var(--a0); font-weight: 700; }
+.info .dots { color: var(--a1); }
+
+.medialabel { color: var(--ink); background: #ffffff; font-weight: 700; padding: 0 .5ch; font-size: .62em;
+  line-height: calc(var(--ch) * .5); height: auto; }
+
+.noscript { position: fixed; inset: auto 5vw 10vh; font: 400 18px/1.5 "DejaVu Sans Mono", monospace; color: var(--text); }
+.noscript code { color: var(--cyan); user-select: all; }
+
+@media (prefers-reduced-motion: reduce) { .c, #scrim, #splash { transition: none; } }

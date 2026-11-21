@@ -1,0 +1,287 @@
+{
+ "parse": [
+  [
+   "@step resolve active release",
+   [
+    "step",
+    "resolve",
+    "active",
+    "release"
+   ]
+  ],
+  [
+   "@step download done 4.9 MB",
+   [
+    "step",
+    "download",
+    "done",
+    "4.9 MB"
+   ]
+  ],
+  [
+   "@step donkey:ports active Ports entry",
+   [
+    "step",
+    "donkey:ports",
+    "active",
+    "Ports entry"
+   ]
+  ],
+  [
+   "@step es skip",
+   [
+    "step",
+    "es",
+    "skip",
+    ""
+   ]
+  ],
+  [
+   "@progress download 1200 4900000",
+   [
+    "progress",
+    "download",
+    1200,
+    4900000
+   ]
+  ],
+  [
+   "@progress download x y",
+   null
+  ],
+  [
+   "@progress download 5",
+   null
+  ],
+  [
+   "@error verify sha256 mismatch",
+   [
+    "error",
+    "verify",
+    "sha256 mismatch"
+   ]
+  ],
+  [
+   "@error lock",
+   [
+    "error",
+    "lock",
+    ""
+   ]
+  ],
+  [
+   "@done talkbox installed",
+   [
+    "done",
+    "talkbox",
+    "installed"
+   ]
+  ],
+  [
+   "@done synced",
+   [
+    "done",
+    "synced",
+    ""
+   ]
+  ],
+  [
+   "@log curl: (6) no host",
+   [
+    "log",
+    "curl: (6) no host"
+   ]
+  ],
+  [
+   "@auth ABCD-1234 https://github.com/login/device 900",
+   [
+    "auth",
+    "ABCD-1234",
+    "https://github.com/login/device",
+    900
+   ]
+  ],
+  [
+   "@what is this",
+   null
+  ],
+  [
+   "plain text",
+   [
+    "log",
+    "plain text"
+   ]
+  ],
+  [
+   "   ",
+   null
+  ],
+  [
+   "",
+   null
+  ],
+  [
+   "line\r",
+   [
+    "log",
+    "line"
+   ]
+  ]
+ ],
+ "friendly": [
+  [
+   "lock",
+   "",
+   null,
+   "another install is running; try again when it ends"
+  ],
+  [
+   null,
+   null,
+   4,
+   "another install is running; try again when it ends"
+  ],
+  [
+   "cancel",
+   "",
+   null,
+   "cancelled; nothing was changed"
+  ],
+  [
+   null,
+   null,
+   130,
+   "cancelled; nothing was changed"
+  ],
+  [
+   null,
+   "",
+   3,
+   "portmart can't install apps on this device yet"
+  ],
+  [
+   "verify",
+   "sha256 mismatch",
+   1,
+   "sha256 mismatch"
+  ],
+  [
+   null,
+   "",
+   1,
+   "engine exited with 1"
+  ],
+  [
+   "verify",
+   "",
+   2,
+   "engine exited with 2"
+  ]
+ ],
+ "scenarios": {
+  "list": {
+   "argv": [
+    "list"
+   ],
+   "lines": [
+    "[{\"id\": \"neon-racer\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}, {\"id\": \"talkbox\", \"installed\": null, \"latest\": \"1.1\", \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}, {\"id\": \"synth-a\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}, {\"id\": \"synth-a-ai\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}, {\"id\": \"webby\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}, {\"id\": \"webnote\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}]"
+   ],
+   "exit": 0
+  },
+  "install": {
+   "argv": [
+    "install",
+    "talkbox"
+   ],
+   "lines": [
+    "@step resolve pending release",
+    "@step download pending talkbox.tar.gz",
+    "@step verify pending sha256",
+    "@step unpack pending unpack",
+    "@step ports pending Ports entry",
+    "@step es pending refresh game list",
+    "@step resolve active release",
+    "@step resolve done release",
+    "@step download active talkbox.tar.gz",
+    "@progress download 1000000 10000000",
+    "@progress download 2000000 10000000",
+    "@progress download 3000000 10000000",
+    "@progress download 4000000 10000000",
+    "@progress download 5000000 10000000",
+    "@progress download 6000000 10000000",
+    "@progress download 7000000 10000000",
+    "@progress download 8000000 10000000",
+    "@progress download 9000000 10000000",
+    "@progress download 10000000 10000000",
+    "@step download done talkbox.tar.gz",
+    "@step verify active sha256",
+    "@step verify done sha256",
+    "@step unpack active unpack",
+    "@step unpack done unpack",
+    "@step ports active Ports entry",
+    "@step ports done Ports entry",
+    "@step es active refresh game list",
+    "@step es done refresh game list",
+    "@done talkbox 1.1"
+   ],
+   "exit": 0
+  },
+  "list_after": {
+   "argv": [
+    "list"
+   ],
+   "lines": [
+    "[{\"id\": \"neon-racer\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}, {\"id\": \"talkbox\", \"installed\": \"1.1\", \"latest\": \"1.1\", \"state\": \"installed\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": false, \"installed_dev\": false, \"dev\": null}, {\"id\": \"synth-a\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}, {\"id\": \"synth-a-ai\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}, {\"id\": \"webby\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}, {\"id\": \"webnote\", \"installed\": null, \"latest\": null, \"state\": \"available\", \"launchers_ok\": true, \"reason\": null, \"cached\": true, \"prerelease\": false, \"installed_prerelease\": null, \"installed_dev\": null, \"dev\": null}]"
+   ],
+   "exit": 0
+  },
+  "remove": {
+   "argv": [
+    "remove",
+    "talkbox"
+   ],
+   "lines": [
+    "@step ports active Ports entry",
+    "@step ports done Ports entry",
+    "@step files active app files",
+    "@step files done app files",
+    "@step es active refresh game list",
+    "@step es done refresh game list",
+    "@done talkbox removed"
+   ],
+   "exit": 0
+  },
+  "fail": {
+   "argv": [
+    "install",
+    "talkbox"
+   ],
+   "lines": [
+    "@step resolve pending release",
+    "@step download pending talkbox.tar.gz",
+    "@step verify pending sha256",
+    "@step unpack pending unpack",
+    "@step ports pending Ports entry",
+    "@step es pending refresh game list",
+    "@step resolve active release",
+    "@step resolve done release",
+    "@step download active talkbox.tar.gz",
+    "@progress download 1000000 10000000",
+    "@progress download 2000000 10000000",
+    "@progress download 3000000 10000000",
+    "@progress download 4000000 10000000",
+    "@progress download 5000000 10000000",
+    "@progress download 6000000 10000000",
+    "@progress download 7000000 10000000",
+    "@progress download 8000000 10000000",
+    "@progress download 9000000 10000000",
+    "@progress download 10000000 10000000",
+    "@step download done talkbox.tar.gz",
+    "@step verify active sha256",
+    "@step verify fail sha256 mismatch",
+    "@error verify sha256 mismatch for talkbox"
+   ],
+   "exit": 1
+  }
+ }
+}

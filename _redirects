@@ -1,0 +1,4 @@
+# The installer line: the scripts ride along with each portmart release on the public catalog repo
+# (portmart's tools/publish_catalog.sh uploads them), so /get always serves the latest one.
+/get      https://github.com/mercurious/portmart-catalog/releases/latest/download/Get-Portmart.sh  302
+/get.ps1  https://github.com/mercurious/portmart-catalog/releases/latest/download/Get-Portmart.ps1 302

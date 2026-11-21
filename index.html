@@ -5,14 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#0b0d12">
-<title>portmart</title>
+<meta name="description" content="portmart: the app store for ROCKNIX handhelds. Browse the catalog, copy one line, and it installs into EmulationStation's Ports.">
+<title>portmart · apps for ROCKNIX handhelds</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/DejaVuSansMono.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="/style.css">
 <script type="module" src="/src/main.js"></script>
 </head>
 <body>
-<h1>portmart</h1>
-<canvas id="splash" role="img" aria-label="portmart"></canvas>
-<noscript><img src="/favicon.svg" alt="portmart" width="160" height="160"></noscript>
+<h1 class="sr">portmart: apps for ROCKNIX handhelds</h1>
+<canvas id="atmo" aria-hidden="true"></canvas>
+<div id="scrim" aria-hidden="true"></div>
+<main id="ui"></main>
+<p id="live" class="sr" aria-live="polite"></p>
+<canvas id="splash" aria-hidden="true"></canvas>
+<noscript><p class="noscript">portmart needs JavaScript. To install it on a ROCKNIX handheld, run <code>curl -fsSL https://portmart.app/get | bash</code> on a computer on the same network.</p></noscript>
 </body>
 </html>
