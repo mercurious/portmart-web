@@ -1,0 +1,9 @@
+# Cloudflare Pages response headers (tools/build.mjs copies this into _site).
+# The page makes no network requests beyond its own files. HSTS is set at the zone
+# (SSL/TLS > Edge Certificates), not here.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'
